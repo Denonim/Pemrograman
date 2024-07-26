@@ -33,7 +33,7 @@ class TransaksiBaru:
         ], state="readonly", background='#C0C0C0', foreground='black')
         self.bulan_combobox.grid(column=2, row=0, padx=10, pady=10)
         self.bulan_combobox.set("Januari")  # Set opsi default
-        self.tahun_combobox = ttk.Combobox(root, values=[str(i) for i in range(2000, 2081)], state="readonly", background='#C0C0C0', foreground='black')
+        self.tahun_combobox = ttk.Combobox(root, values=[str(i) for i in range(2000, 2024)], state="readonly", background='#C0C0C0', foreground='black')
         self.tahun_combobox.grid(column=3, row=0, padx=10, pady=10)
         self.tahun_combobox.set("2000")  # Set opsi default
 
@@ -134,7 +134,7 @@ class HapusTransaksi:
             self.histori_transaksi_listbox.insert(tk.END, entry)
 
         # Tombol untuk menghapus transaksi terpilih
-        ttk.Button(root, text="Hapus Transaksi", command=self.hapus_transaksi, style='TButton').grid(column=0, row=6, pady=10)
+        ttk.Button(root, text="Hapus Transaksi", command=self.hapus_transaksi, style='TButton').grid(column=1, row=6, pady=10)
 
         # Tombol untuk kembali ke halaman utama
         ttk.Button(root, text="Kembali", command=self.kembali_ke_halaman_utama, style='TButton').grid(column=1, row=7, columnspan=2, pady=10)

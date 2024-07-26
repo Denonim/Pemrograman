@@ -1,0 +1,76 @@
+import random
+from datetime import datetime, timedelta
+
+Pekerja = {
+    "011": {"nama": "firja", "tanggal_lahir": "1990-12-30", "sebagai": "Manager"},
+    "012": {"nama": "andika", "tanggal_lahir": "1990-08-15", "sebagai": "Staff"},
+    "013": {"nama": "fariz", "tanggal_lahir": "1991-10-04", "sebagai": "Staff"},
+    "014": {"nama": "farhan", "tanggal_lahir": "1990-04-16", "sebagai": "Staff"},
+    "015": {"nama": "keytaro", "tanggal_lahir": "1992-03-19", "sebagai": "HRD"},
+    "001": {"nama": "abi", "tanggal_lahir": "1991-08-22", "sebagai": "CEO"}  # Menutup kurung yang hilang
+}
+
+# ... (fungsi lainnya tetap sama)
+
+# Menambahkan pekerja random
+for i in range(1, 101):
+    id_pekerja = f"{i:03d}"  # Format ID menjadi 3 digit (contoh: 001, 002, ...)
+    while id_pekerja in Pekerja:  # Pastikan ID unik
+        id_pekerja = f"{random.randint(1, 100):03d}"
+
+    Pekerja[id_pekerja] = {
+        "nama": f"Pekerja {id_pekerja}",  # Anda bisa mengganti dengan nama yang lebih realistis
+        "tanggal_lahir": f"{random.randint(1980, 2000):04d}-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
+        "sebagai": random.choice(["Manager", "Staff", "HRD", "CEO"])
+    }
+
+import datetime
+
+data_pekerja = {
+    "1": ("Abi Satria", "2006-08-22", "Manajer"), 
+}
+
+def tampilkan_data_dan_cek_kedatangan():
+
+    while True:
+        id_pekerja = input("Masukkan ID pekerja: ")
+        if id_pekerja in data_pekerja:
+            nama, tanggal_lahir_str, jabatan = data_pekerja[id_pekerja]
+            tanggal_lahir = datetime.datetime.strptime(tanggal_lahir_str, "%Y-%m-%d").date()
+
+            umur = datetime.date.today().year - tanggal_lahir.year
+            tahun_pensiun = tanggal_lahir.year + 58  # Usia pensiun 58 tahun
+
+            print("\nData Pekerja:")
+            print(f"ID: {id_pekerja}, Nama: {nama}, Tanggal Lahir: {tanggal_lahir_str}, Umur: {umur}, Jabatan: {jabatan}, Perkiraan Pensiun: {tahun_pensiun}")
+
+            # Cek Kedatangan
+            jam_masuk = datetime.time(7, 0)  # Pukul 07.00 WIB
+
+            while True:
+                try:
+                    check_in_str = input("Jam berapa Anda check-in (format HH:MM)? ")
+                    check_in_time = datetime.datetime.strptime(check_in_str, "%H:%M").time()
+                    break
+                except ValueError:
+                    print("Format waktu tidak valid. Gunakan HH:MM.")
+
+            selisih = datetime.datetime.combine(datetime.date.today(), check_in_time) - datetime.datetime.combine(datetime.date.today(), jam_masuk)
+
+            if selisih < datetime.timedelta(0):
+                menit_awal = abs(selisih.total_seconds()) // 60
+                print(f"Terima kasih, {nama}, Anda datang lebih awal {menit_awal} menit.")  # Tambahkan nama
+            elif selisih == datetime.timedelta(0):
+                print(f"Terima kasih, {nama}, Anda datang tepat waktu.")  # Tambahkan nama
+            else:
+                menit_terlambat = selisih.total_seconds() // 60
+                jam_checkout = (datetime.datetime.combine(datetime.date.today(), jam_masuk) + datetime.timedelta(hours=9, minutes=menit_terlambat)).time()
+                print(f"{nama}, Anda datang terlambat {menit_terlambat} menit, harap check-out pukul {jam_checkout.strftime('%H:%M')}")  # Tambahkan nama
+            break  # Keluar dari loop jika ID valid dan cek kedatangan selesai
+
+        else:
+            print("ID pekerja tidak ditemukan.")
+
+if __name__ == "__main__":
+    tampilkan_data_dan_cek_kedatangan()
+
